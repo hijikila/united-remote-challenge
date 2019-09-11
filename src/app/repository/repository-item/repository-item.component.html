@@ -1,1 +1,26 @@
-<p>repository-item works!</p>
+<div class="repository">
+  <div class="avatar">
+    <img [src]="repository.avatarUrl" [alt]="repository.username"  [title]="repository.username">
+  </div>
+  <div class="content" [title]="repository.repositoryName">
+    <div class="content-title">
+      <h1>{{ repository.repositoryName }}</h1>
+    </div>
+    <div class="content-body" [title]="repository.description">
+      <p>{{ repository.description }}</p>
+      <em *ngIf="!repository.description">No description available for this repository</em>
+    </div>
+    <div class="content-footer">
+      <div class="stars">
+        <p>Stars : <span>{{ repository.stars }}</span></p>
+      </div>
+      <div class="issues">
+        <p>Issues : <span>{{ repository.issues }}</span></p>
+      </div>
+
+      <div class="submission">
+        <p>Submitted {{ repository.creationDaysElapsed }} days ago by <span class="username">{{ repository.username }}</span></p>
+      </div>
+    </div>
+  </div>
+</div>
