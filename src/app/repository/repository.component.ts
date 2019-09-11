@@ -23,7 +23,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
       .subscribe(
         (repositories: Repository[]) => {
           this.repositories.push(...repositories);
-          console.log(repositories);
+          //console.log(repositories);
         }
       );
   }
@@ -32,4 +32,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
     this.reposSubscription.unsubscribe();
   }
 
+  onScrollEventFired(event) {
+    this.repositoryService.fetchData();
+  }
 }

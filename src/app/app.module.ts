@@ -7,6 +7,7 @@ import { RepositoryItemComponent } from './repository/repository-item/repository
 import { ShortenNumberPipe } from './shared/pipes/shorten-number.pipe';
 import { ShortenTextPipe } from './shared/pipes/shorten-text.pipe';
 import {HttpClientModule} from '@angular/common/http';
+import {InfiniteScrollDirective} from './shared/directives/infinite-scroll.directive';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {HttpClientModule} from '@angular/common/http';
     RepositoryComponent,
     RepositoryItemComponent,
     ShortenNumberPipe,
-    ShortenTextPipe
+    ShortenTextPipe,
+    InfiniteScrollDirective
   ],
   imports: [
     BrowserModule,
