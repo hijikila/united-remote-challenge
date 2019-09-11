@@ -11,8 +11,8 @@ export class GithubHttpService {
   constructor(private httpClient: HttpClient) {
   }
 
-// Issues the the request to the GitHub API
-  get(pageNum: number) {
+// Issues the request to the GitHub API
+  getRepositories(pageNum: number) {
     console.log('in get()');
     return this.prepareRequest(pageNum)
       .pipe(
@@ -30,7 +30,7 @@ export class GithubHttpService {
             const items = [];
             for (const responseKey in itemsArray) {
               if (itemsArray.hasOwnProperty(responseKey)) {
-                items.push(...itemsArray[responseKey]);
+                items.push(itemsArray[responseKey]);
               }
             }
             // Pass the extracted data to the next map
@@ -66,6 +66,7 @@ export class GithubHttpService {
               // add the repository polished/filtered object to the final array
               repositories.push(repoItem);
             }
+            console.log(repositories);
             return repositories;
           }
         ),
@@ -84,14 +85,14 @@ export class GithubHttpService {
     const day = this.format(monthBeforeNowDate.getDate());
     const year = monthBeforeNowDate.getFullYear();
 
-    const lastCreatedQueryValue = year + '-' + month + '-' + day;
+    const creationDate = year + '-' + month + '-' + day;
 
     // return the prepared request
     return this.httpClient
       .get(
         `${END_POINT_URL}`,
         {
-          params: new HttpParams().append('q', 'created:>' + lastCreatedQueryValue)
+          params: new HttpParams().append('q', 'created:>' + creationDate)
             .append('sort', 'stars') // sort the results according to the number of stars
             .append('order', 'desc') // order the result from the most rated to the less rated
             .append('page', pageNum.toString()) // precising the page we are currently looking for
