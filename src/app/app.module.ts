@@ -6,6 +6,7 @@ import { RepositoryComponent } from './repository/repository.component';
 import { RepositoryItemComponent } from './repository/repository-item/repository-item.component';
 import { ShortenNumberPipe } from './shared/pipes/shorten-number.pipe';
 import { ShortenTextPipe } from './shared/pipes/shorten-text.pipe';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ShortenTextPipe } from './shared/pipes/shorten-text.pipe';
     ShortenTextPipe
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
