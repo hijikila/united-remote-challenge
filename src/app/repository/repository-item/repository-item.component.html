@@ -7,15 +7,15 @@
       <h1>{{ repository.repositoryName }}</h1>
     </div>
     <div class="content-body" [title]="repository.description">
-      <p>{{ repository.description }}</p>
+      <p>{{ repository.description | shortenText }}</p>
       <em *ngIf="!repository.description">No description available for this repository</em>
     </div>
     <div class="content-footer">
       <div class="stars">
-        <p>Stars : <span>{{ repository.stars }}</span></p>
+        <p>Stars : <span>{{ repository.stars | shortenNumber }}</span></p>
       </div>
       <div class="issues">
-        <p>Issues : <span>{{ repository.issues }}</span></p>
+        <p>Issues : <span>{{ repository.issues | shortenNumber }}</span></p>
       </div>
 
       <div class="submission">
