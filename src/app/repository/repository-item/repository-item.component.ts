@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Repository} from '../state/repository.model';
 
 @Component({
@@ -8,15 +8,7 @@ import {Repository} from '../state/repository.model';
 })
 export class RepositoryItemComponent implements OnInit {
   // filled with some dummy data
-  repository: Repository = new Repository(
-    'repository title',
-    'this is a test description!',
-    200,
-    10,
-    'hijikila',
-    'https://avatars2.githubusercontent.com/u/6993869?s=460&v=4l',
-    2
-  );
+  @Input() repository: Repository = null;
   constructor() { }
 
   ngOnInit() {
