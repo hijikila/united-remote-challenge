@@ -1,4 +1,4 @@
-import {AfterViewInit, Directive, ElementRef, Input} from '@angular/core';
+import {Directive, ElementRef, Input, OnInit} from '@angular/core';
 import {fromEvent, Observable} from 'rxjs';
 import {exhaustMap, filter, map, pairwise, startWith} from 'rxjs/operators';
 
@@ -6,18 +6,18 @@ import {exhaustMap, filter, map, pairwise, startWith} from 'rxjs/operators';
   selector: '[appScrollContainer]'
 })
 
-export class InfiniteScrollDirective implements AfterViewInit {
+export class InfiniteScrollDirective implements OnInit {
   @Input() reachedBottomCallBack; // the callback responsible of loading more data when the bottom of the page is reached
   @Input() isFirstLoad = false; // to immediately load data upon first entering the page
   private listScrollEvent: Observable<any> = null; // the scroll event observable
   private scrollDownEvent; // the Observable of the scrolling down event
-
+  loading = false;
   constructor(private listRef: ElementRef) { // retrieve the element reference of our hosting element (<ul> in our case)
   }
 
-  // The most suitable lifeCycle hook of a directive
-  // where to initialize the scroll behavior and track it
-  ngAfterViewInit(): void {
+  // Initialize the scroll behavior and track it
+  ngOnInit(): void {
+    this.loading = true;
     // Get the observable of the scroll event
     // from the Host of the directive
     this.listScrollEvent = fromEvent(this.listRef.nativeElement, 'scroll');
@@ -64,6 +64,7 @@ export class InfiniteScrollDirective implements AfterViewInit {
         })
       )
       .subscribe(() => {
+        this.loading = false;
       });
     console.log(this.listScrollEvent);
   }

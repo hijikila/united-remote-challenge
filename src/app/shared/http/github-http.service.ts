@@ -18,6 +18,7 @@ export class GithubHttpService {
       .pipe(
         map(
           response => {
+            console.log(response);
             const itemsKey = 'items';
             if (!response.hasOwnProperty(itemsKey)) {
               return null;
