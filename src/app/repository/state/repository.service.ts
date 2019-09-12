@@ -14,13 +14,20 @@ export class RepositoryService {
   error = new Subject<{ errorCode: number, errorMessage: string }>();
   isLoading = new Subject<boolean>();
   request: Observable<any>;
+  pagination: PaginationInfo;
 
   constructor(private github: GithubHttpService) {
+    this.pagination = {
+      currentPageUrl: '',
+      next: '',
+      last: ''
+    };
+    this.pagination.currentPageUrl = this.pagination.next = this.prepareQueryUrl(30);
   }
 
   setRepositories(repositories: Repository[]) {
     this.repositories = repositories;
-    console.log(repositories);
+
     this.repositoriesArrayChanged.next(this.repositories.slice());
     this.isLoading.next(false);
   }
@@ -30,14 +37,14 @@ export class RepositoryService {
     this.isLoading.next(false);
   }
 
-  fetchData(pageNum: number) {
+  fetchData() {
     this.isLoading.next(true);
-    console.log('in fetch ', pageNum);
-    console.log(pageNum);
 
-    const url = this.prepareQueryUrl(30);
+    if (this.pagination.currentPageUrl === this.pagination.last) {
+      return;
+    }
 
-    this.request = this.github.getRepositories(url);
+    this.request = this.github.getRepositories(this.pagination.next);
 
     this.request = this.extractHeaders();
 
@@ -47,7 +54,6 @@ export class RepositoryService {
 
     this.request = this.extractRepositories();
 
-    console.log('obs ', this.request);
     return this.request.pipe(
       tap(
         (repositories: Repository[]) => {
@@ -61,13 +67,11 @@ export class RepositoryService {
   }
 
   prepareQueryUrl(daysNum: number) {
-    const requestUrl = END_POINT_URL +
+    return END_POINT_URL +
       '?q=created:>' + this.calculateDate(daysNum) +
       '&sort=stars' + // sort the results according to the number of stars
       '&order=desc' + // order the result from the most rated to the less rated
       '&page=1'; // precising the page we are currently looking for
-    console.log(requestUrl);
-    return requestUrl;
   }
 
   calculateDate(daysNum: number): string {
@@ -95,7 +99,7 @@ export class RepositoryService {
       tap(
         (fullResponse) => {
           const responseHeaders = fullResponse.headers;
-          console.log('headers ', (responseHeaders.get('Link')));
+          this.updatePagination(responseHeaders.get('Link'));
         }
       )
     );
@@ -115,8 +119,6 @@ export class RepositoryService {
               error.errorMessage = errorResponse.message;
             }
           }
-
-          console.log('formated error : ', error);
           return throwError(error);
         }
       )
@@ -187,5 +189,30 @@ export class RepositoryService {
       )
     );
   }
+
+  updatePagination(linksString: string) {
+    console.log('in update pagination');
+    const links = linksString.split(',');
+
+    for (const link of links) {
+      if (link.includes('rel=\"next\"')) {
+        this.pagination.currentPageUrl = this.pagination.next;
+        const indexOfDelimiter1 = link.indexOf('<') + 1;
+        const indexOfDelimiter2 = link.lastIndexOf('>');
+        this.pagination.next = link.slice(indexOfDelimiter1, indexOfDelimiter2);
+        console.log('current ' + this.pagination.currentPageUrl);
+        console.log('next ' + this.pagination.next);
+      } else if (link.includes('rel=\"last\"') && this.pagination.last === '') {
+        const indexOfDelimiter1 = link.indexOf('<') + 1;
+        const indexOfDelimiter2 = link.lastIndexOf('>');
+        this.pagination.last = link.slice(indexOfDelimiter1, indexOfDelimiter2);
+      }
+    }
+  }
 }
 
+interface PaginationInfo {
+  currentPageUrl: string;
+  next: string;
+  last: string;
+}

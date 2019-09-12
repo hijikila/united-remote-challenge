@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {Repository} from './state/repository.model';
@@ -14,7 +14,6 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   repositories: Repository[] = [];
   private reposSubscription: Subscription;
   userScrollDown;
-  currentPage = 1;
   isLoadingSub: Subscription;
   isLoading: boolean;
   error: {errorCode: number, errorMessage: string} = null;
@@ -43,7 +42,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
         (error: {errorCode: number, errorMessage: string}) => {
           this.error = error;
         }
-      )
+      );
   }
 
   ngOnDestroy(): void {
@@ -53,6 +52,6 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   }
 
   onScrollEventFired() {
-    return this.repositoryService.fetchData(this.currentPage++);
+    return this.repositoryService.fetchData();
   }
 }
