@@ -4,7 +4,8 @@
   class="repository-list"
   appScrollContainer
   [reachedBottomCallBack]="userScrollDown"
-  [isFirstLoad]="true">
+  [isFirstLoad]="true"
+  [@animatedList]="repositories.length">
   <li *ngIf="(repositories.length === 0 && !isLoading) || error">
     <em>No repositories data available. Please, reload the page to fetch data.</em>
   </li>

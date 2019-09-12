@@ -3,11 +3,43 @@ import {Subscription} from 'rxjs';
 
 import {Repository} from './state/repository.model';
 import {RepositoryService} from './state/repository.service';
+import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-repository',
   templateUrl: './repository.component.html',
-  styleUrls: ['./repository.component.scss']
+  styleUrls: ['./repository.component.scss'],
+  animations: [
+    trigger('animatedList', [
+      transition('* => *', [ // whatever the state of the element to whatever state it transit to
+        query(':enter',  [
+          style({ // initial style
+            opacity: 0,
+            transform: 'translateX(120px)'
+          }),
+          stagger(200, [ // define a time between each element (in our case <li>) animation
+            animate(600, keyframes([ // keyframes to describe different stages of the animation
+              style({
+                opacity: 0.3,
+                transform: 'translateX(120px)',
+                offset: 0
+              }),
+              style({
+                opacity: 0.7,
+                transform: 'translateX(30px)',
+                offset: 0.8
+              }),
+              style({
+                opacity: 1,
+                transform: 'translateX(0px)',
+                offset: 1
+              }),
+            ]))
+          ])
+        ], {optional: true})
+      ]),
+    ])
+  ]
 })
 export class RepositoryComponent implements OnInit, OnDestroy {
 
