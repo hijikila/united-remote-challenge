@@ -9,6 +9,7 @@ import { ShortenTextPipe } from './shared/pipes/shorten-text.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollDirective } from './shared/directives/infinite-scroll.directive';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import {ErrorAlertComponent} from './shared/error-alert/error-alert.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     ShortenNumberPipe,
     ShortenTextPipe,
     InfiniteScrollDirective,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ErrorAlertComponent
   ],
   imports: [
     BrowserModule,

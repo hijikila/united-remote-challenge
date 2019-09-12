@@ -17,6 +17,8 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   currentPage = 1;
   isLoadingSub: Subscription;
   isLoading: boolean;
+  error: {errorCode: number, errorMessage: string} = null;
+  errorSub: Subscription;
 
   constructor(private repositoryService: RepositoryService) {
   }
@@ -36,11 +38,18 @@ export class RepositoryComponent implements OnInit, OnDestroy {
           this.isLoading = isLoading;
         }
       );
+    this.errorSub = this.repositoryService.error
+      .subscribe(
+        (error: {errorCode: number, errorMessage: string}) => {
+          this.error = error;
+        }
+      )
   }
 
   ngOnDestroy(): void {
     this.reposSubscription.unsubscribe();
     this.isLoadingSub.unsubscribe();
+    this.errorSub.unsubscribe();
   }
 
   onScrollEventFired() {

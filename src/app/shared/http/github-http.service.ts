@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Repository} from '../../repository/state/repository.model';
+import {throwError} from 'rxjs';
 
-const END_POINT_URL = 'https://api.github.com/search/repositories';
+const END_POINT_URL = 'https://api.github.com/search/repositorie';
 
 @Injectable({providedIn: 'root'})
 export class GithubHttpService {
@@ -16,6 +17,23 @@ export class GithubHttpService {
     console.log('in get()');
     return this.prepareRequest(pageNum)
       .pipe(
+        catchError(
+          (errorResponse) => {
+            console.log(errorResponse);
+            const error = {errorCode: 400, errorMessage: 'An error has occurred!'};
+            if (errorResponse) {
+              if (errorResponse.status) {
+                error.errorCode = errorResponse.status;
+              }
+              if (errorResponse.message) {
+                error.errorMessage = errorResponse.message;
+              }
+            }
+
+            console.log('formated error : ', error);
+            return throwError(error);
+          }
+        ),
         map(
           response => {
             console.log(response);

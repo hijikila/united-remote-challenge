@@ -10,6 +10,7 @@ import {tap} from 'rxjs/operators';
 export class RepositoryService {
   repositories: Repository[] = [];
   repositoriesArrayChanged = new Subject<Repository[]>();
+  error = new Subject<{errorCode: number, errorMessage: string}>();
   isLoading = new Subject<boolean>();
 
   constructor(private github: GithubHttpService) {
@@ -18,6 +19,11 @@ export class RepositoryService {
   setRepositories(repositories: Repository[]) {
     this.repositories = repositories;
     this.repositoriesArrayChanged.next(this.repositories.slice());
+    this.isLoading.next(false);
+  }
+
+  setError(error: {errorCode: number, errorMessage: string}) {
+    this.error.next(error);
     this.isLoading.next(false);
   }
 
@@ -30,7 +36,9 @@ export class RepositoryService {
         tap(
           (repositories: Repository[]) => {
             this.setRepositories(repositories);
-            this
+          },
+          (error: {errorCode: number, errorMessage: string}) => {
+            this.setError(error);
           }
         )
       );
