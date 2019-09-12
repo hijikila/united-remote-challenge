@@ -13,7 +13,7 @@
   top: 40vh;
   left: 30vw;
   width: 40vw;
-  background: white;
+  background-color: wheat;
   z-index: 100;
   box-shadow: 0 2px 8px lighten(red, 10);
   border-radius: 10px 10px 0 0;
@@ -28,12 +28,18 @@
 }
 
 .alert-box-body {
-  vertical-align: center;
-  margin-top: 3vh;
-  margin-left: 3vw;
+  padding: {
+    left: 15px;
+    right: 15px;
+    top: 25px;
+    bottom: 25px;
+  };
+
 }
 .alert-box-actions{
   text-align: right;
-  margin-right: 5px;
-  margin-bottom: 5px;
+  margin: {
+    bottom: 10px;
+    right: 10px;
+  };
 }

@@ -5,10 +5,14 @@
   appScrollContainer
   [reachedBottomCallBack]="userScrollDown"
   [isFirstLoad]="true">
+  <li *ngIf="(repositories.length === 0 && !isLoading) || error">
+    <em>No repositories data available. Please, reload the page to fetch data.</em>
+  </li>
   <li *ngFor="let repository of repositories"  >
     <app-repository-item [repository]="repository"></app-repository-item>
   </li>
   <li *ngIf="isLoading" style="text-align: center">
     <app-loading-spinner></app-loading-spinner>
   </li>
+
 </ul>
