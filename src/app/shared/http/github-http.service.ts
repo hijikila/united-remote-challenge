@@ -66,7 +66,6 @@ export class GithubHttpService {
               // add the repository polished/filtered object to the final array
               repositories.push(repoItem);
             }
-            console.log(repositories);
             return repositories;
           }
         ),

@@ -1,5 +1,9 @@
 <h1 style="text-align: center">Most rated repositories for the last 30 days</h1>
-<ul  class="repository-list" appScrollContainer  (reachedBottom)="onScrollEventFired($event)">
+<ul
+  class="repository-list"
+  appScrollContainer
+  [reachedBottomCallBack]="userScrollDown"
+  [isFirstLoad]="true">
   <li *ngFor="let repository of repositories"  >
     <app-repository-item [repository]="repository"></app-repository-item>
   </li>

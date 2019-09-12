@@ -13,17 +13,18 @@ export class RepositoryComponent implements OnInit, OnDestroy {
 
   repositories: Repository[] = [];
   private reposSubscription: Subscription;
+  userScrollDown;
+  currentPage = 1;
 
   constructor(private repositoryService: RepositoryService) {
   }
 
   ngOnInit() {
-    this.repositoryService.fetchData();
+    this.userScrollDown = this.onScrollEventFired.bind(this);
     this.reposSubscription = this.repositoryService.repositoriesArrayChanged
       .subscribe(
         (repositories: Repository[]) => {
           this.repositories.push(...repositories);
-          //console.log(repositories);
         }
       );
   }
@@ -32,7 +33,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
     this.reposSubscription.unsubscribe();
   }
 
-  onScrollEventFired(event) {
-    this.repositoryService.fetchData();
+  onScrollEventFired() {
+    return this.repositoryService.fetchData(this.currentPage++);
   }
 }
