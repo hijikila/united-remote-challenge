@@ -49,7 +49,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   isLoadingSub: Subscription;
   isLoading: boolean;
   hasMore: boolean;
-  error: {errorCode: number, errorMessage: string} = null;
+  error: Error = null;
   errorSub: Subscription;
 
   constructor(private repositoryService: RepositoryService) {
@@ -74,7 +74,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
       );
     this.errorSub = this.repositoryService.error
       .subscribe(
-        (error: {errorCode: number, errorMessage: string}) => {
+        (error: Error) => {
           this.error = error;
         }
       );

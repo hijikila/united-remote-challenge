@@ -11,7 +11,7 @@ const END_POINT_URL = 'https://api.github.com/search/repositories';
 export class RepositoryService {
   repositories: Repository[] = [];
   repositoriesArrayChanged = new Subject<Repository[]>();
-  error = new Subject<{ errorCode: number, errorMessage: string }>();
+  error = new Subject<Error>();
   isLoading = new Subject<boolean>();
   request: Observable<any>;
   pagination: PaginationInfo;
@@ -32,7 +32,7 @@ export class RepositoryService {
     this.isLoading.next(false);
   }
 
-  setError(error: { errorCode: number, errorMessage: string }) {
+  setError(error: Error) {
     this.error.next(error);
     this.isLoading.next(false);
   }
@@ -59,7 +59,7 @@ export class RepositoryService {
         (repositories: Repository[]) => {
           this.setRepositories(repositories);
         },
-        (error: { errorCode: number, errorMessage: string }) => {
+        (error: Error) => {
           this.setError(error);
         }
       )
