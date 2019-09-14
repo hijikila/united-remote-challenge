@@ -3,54 +3,65 @@ import {Subscription} from 'rxjs';
 
 import {Repository} from './state/repository.model';
 import {RepositoryService} from './state/repository.service';
-import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {animate, animation, keyframes, style, transition, trigger, useAnimation} from '@angular/animations';
+
+// we try to make this animation reusable
+export const fadeInAnimation = animation([
+  style({ // initial style
+    opacity: '0',
+    transform: 'translateX(120px)'
+  }),
+  animate('{{ duration }}', keyframes([ // keyframes to describe precisely the different stages of the animation
+    style({
+      opacity: '0.3',
+      transform: 'translateX(120px)',
+      offset: '0'
+    }),
+    style({
+      opacity: '0.7',
+      transform: 'translateX(30px)',
+      offset: '0.5'
+    }),
+    style({
+      opacity: '1',
+      transform: 'translateX(0px)',
+      offset: '1'
+    }),
+  ]))
+]);
+
 
 @Component({
   selector: 'app-repository',
   templateUrl: './repository.component.html',
   styleUrls: ['./repository.component.scss'],
   animations: [
-    trigger('animatedList', [
-      transition('* => *', [ // whatever the state of the element to whatever state it transit to
-        query(':enter',  [
-          style({ // initial style
-            opacity: 0,
-            transform: 'translateX(120px)'
-          }),
-          stagger(200, [ // define a time between each element (in our case <li>) animation
-            animate(600, keyframes([ // keyframes to describe different stages of the animation
-              style({
-                opacity: 0.3,
-                transform: 'translateX(120px)',
-                offset: 0
-              }),
-              style({
-                opacity: 0.7,
-                transform: 'translateX(30px)',
-                offset: 0.8
-              }),
-              style({
-                opacity: 1,
-                transform: 'translateX(0px)',
-                offset: 1
-              }),
-            ]))
-          ])
-        ], {optional: true})
-      ]),
-    ])
+    trigger('FadeInElement', [
+      transition(':enter', [ // :enter === void => *
+        useAnimation(fadeInAnimation,
+          {
+            params: {
+              duration: '600ms' // make sure the value passed here is quoted like this (as a string value)
+              // if we pass a numeric value i.e 600 it may causes problems with the animation
+              // Because its used a string in the fadeInAnimation via string interpolation
+              // Because mixing the two format (string and numeric values) is not supported
+              // which should be fixed in the upcoming releases, i think!  :)
+            }
+          })
+      ])
+    ]),
   ]
 })
 export class RepositoryComponent implements OnInit, OnDestroy {
 
   repositories: Repository[] = [];
-  private reposSubscription: Subscription;
   userScrollDown;
   isLoadingSub: Subscription;
   isLoading: boolean;
   hasMore: boolean;
   error: Error = null;
   errorSub: Subscription;
+  private reposSubscription: Subscription;
 
   constructor(private repositoryService: RepositoryService) {
   }
