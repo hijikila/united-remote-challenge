@@ -190,6 +190,10 @@ export class RepositoryService {
     );
   }
 
+  hasMore() {
+    return this.pagination.currentPageUrl !== this.pagination.last;
+  }
+
   updatePagination(linksString: string) {
     console.log('in update pagination');
     const links = linksString.split(',');

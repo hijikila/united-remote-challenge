@@ -11,6 +11,7 @@ export class InfiniteScrollDirective implements OnInit {
   @Input() isFirstLoad = false; // to immediately load data upon first entering the page
   private listScrollEvent: Observable<any> = null; // the scroll event observable
   private scrollDownEvent; // the Observable of the scrolling down event
+  @Input() hasMore;
   loading = false;
   constructor(private listRef: ElementRef) { // retrieve the element reference of our hosting element (<ul> in our case)
   }

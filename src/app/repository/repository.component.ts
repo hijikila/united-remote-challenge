@@ -48,6 +48,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   userScrollDown;
   isLoadingSub: Subscription;
   isLoading: boolean;
+  hasMore: boolean;
   error: {errorCode: number, errorMessage: string} = null;
   errorSub: Subscription;
 
@@ -57,9 +58,11 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = false;
     this.userScrollDown = this.onScrollEventFired.bind(this);
+    this.hasMore = this.repositoryService.hasMore();
     this.reposSubscription = this.repositoryService.repositoriesArrayChanged
       .subscribe(
         (repositories: Repository[]) => {
+          this.hasMore = this.repositoryService.hasMore();
           this.repositories.push(...repositories);
         }
       );
