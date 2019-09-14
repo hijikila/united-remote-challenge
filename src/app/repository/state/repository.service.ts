@@ -4,14 +4,15 @@ import {Observable, Subject, throwError} from 'rxjs';
 import {Repository} from './repository.model';
 import {GithubHttpService} from '../../shared/http/github-http.service';
 import {catchError, map, tap} from 'rxjs/operators';
+import {CustomError} from '../../shared/error-alert/state/custom-error.model';
 
 const END_POINT_URL = 'https://api.github.com/search/repositories';
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class RepositoryService {
   repositories: Repository[] = [];
   repositoriesArrayChanged = new Subject<Repository[]>();
-  error = new Subject<Error>();
+  error = new Subject<CustomError>();
   isLoading = new Subject<boolean>();
   request: Observable<any>;
   pagination: PaginationInfo;
@@ -32,7 +33,7 @@ export class RepositoryService {
     this.isLoading.next(false);
   }
 
-  setError(error: Error) {
+  setError(error: CustomError) {
     this.error.next(error);
     this.isLoading.next(false);
   }
@@ -59,7 +60,7 @@ export class RepositoryService {
         (repositories: Repository[]) => {
           this.setRepositories(repositories);
         },
-        (error: Error) => {
+        (error: CustomError) => {
           this.setError(error);
         }
       )

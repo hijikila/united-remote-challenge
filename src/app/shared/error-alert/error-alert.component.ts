@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {CustomError} from './state/custom-error.model';
 
 @Component({
   selector: 'app-error-alert',
@@ -7,7 +8,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ErrorAlertComponent implements OnInit {
 
-  @Input() error: Error;
+  @Input() error: CustomError;
   constructor() { }
 
   ngOnInit() {

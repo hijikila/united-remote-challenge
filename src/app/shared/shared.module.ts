@@ -23,7 +23,8 @@ import {LoadingSpinnerComponent} from './loading-spinner/loading-spinner.compone
     ShortenTextPipe,
     InfiniteScrollDirective,
     LoadingSpinnerComponent,
-    ErrorAlertComponent
+    ErrorAlertComponent,
+    CommonModule
   ]
 })
 export class SharedModule {}

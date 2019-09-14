@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {Repository} from './state/repository.model';
 import {RepositoryService} from './state/repository.service';
 import {animate, animation, keyframes, style, transition, trigger, useAnimation} from '@angular/animations';
+import {CustomError} from '../shared/error-alert/state/custom-error.model';
 
 // we try to make this animation reusable
 export const fadeInAnimation = animation([
@@ -59,7 +60,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
   isLoadingSub: Subscription;
   isLoading: boolean;
   hasMore: boolean;
-  error: Error = null;
+  error: CustomError = null;
   errorSub: Subscription;
   private reposSubscription: Subscription;
 
@@ -85,7 +86,7 @@ export class RepositoryComponent implements OnInit, OnDestroy {
       );
     this.errorSub = this.repositoryService.error
       .subscribe(
-        (error: Error) => {
+        (error: CustomError) => {
           this.error = error;
         }
       );
