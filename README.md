@@ -10,7 +10,7 @@ The project goal is to list most rated Github repositories of the last 30 days, 
 
 This project is developed under Angular 2 (v. 8.2.5)
 
-##Features
+## Features
 
 * Listing the most rated repositories that were created the last 30 days
 * Infinite scrolling: Loading repositories on scrolling down the page
@@ -20,11 +20,11 @@ It also implements:
 * Structured to module by feature (only the repository list for now)
 * Lazy loading of modules and their components (not much impact for now because the app is small and contains only 2 modules)
 
-##Approach
+## Approach
 This project is implemented using a classical approach of angular for the infinite scrolling, which is based on directives and RxJS operators.
 It can be done also, using the virtual scrolling feature of Angular material.
 
-##Import
+## Import
 
 To be able to test it on your machine, you need to :
 * Import the project to your IDE
